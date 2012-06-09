@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "logindialog.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -14,6 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
 
     m_pTrayIcon->show();
+
+    createLoginDialog();
+    connect(m_pLoginDialog, SIGNAL(loggedIn()), this, SLOT(loggedIn()));
 }
 
 MainWindow::~MainWindow()
@@ -53,4 +58,20 @@ void MainWindow::toggle() {
 void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger) this->toggle();
+}
+
+void MainWindow::createLoginDialog()
+{
+    m_pLoginDialog = new LoginDialog(this);
+}
+
+void MainWindow::login()
+{
+    m_pLoginDialog->show();
+    m_pLoginDialog->login();
+}
+
+void MainWindow::loggedIn()
+{
+    m_pTrayIcon->showMessage(tr("Congrats!"), tr("Successfully logged into Yammer!"));
 }

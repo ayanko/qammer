@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui webkit
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,11 +12,14 @@ TARGET = qammer
 TEMPLATE = app
 
 SOURCES += src/main.cpp\
-        src/mainwindow.cpp
+        src/mainwindow.cpp \
+    src/logindialog.cpp
 
-HEADERS  += src/mainwindow.h
+HEADERS  += src/mainwindow.h \
+    src/logindialog.h
 
-FORMS    += src/mainwindow.ui
+FORMS    += src/mainwindow.ui \
+    src/logindialog.ui
 
 RESOURCES += \
     src/qammer.qrc

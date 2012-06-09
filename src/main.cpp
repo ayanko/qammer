@@ -1,10 +1,17 @@
 #include <QApplication>
-#include "mainwindow.h"
 #include <QMessageBox>
+#include <QSettings>
+
+#include "mainwindow.h"
+
+class LoginDialog;
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    QCoreApplication::setOrganizationName("qammer");
+    QCoreApplication::setApplicationName("qammer");
 
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
         QMessageBox::critical(0,
@@ -18,6 +25,12 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.show();
+
+    QSettings settings;
+
+    if (!settings.contains("access_token")) {
+      w.login();
+    }
 
     return a.exec();
 }
