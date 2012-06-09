@@ -6,6 +6,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QSystemTrayIcon *m_pTrayIcon = new QSystemTrayIcon(this);
+    m_pTrayIcon->setIcon(QIcon(":/images/yammer_logo.png"));
+    m_pTrayIcon->show();
 }
 
 MainWindow::~MainWindow()
