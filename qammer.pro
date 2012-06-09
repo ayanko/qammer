@@ -11,13 +11,12 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = qammer
 TEMPLATE = app
 
+SOURCES += src/main.cpp\
+        src/mainwindow.cpp
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+HEADERS  += src/mainwindow.h
 
-HEADERS  += mainwindow.h
-
-FORMS    += mainwindow.ui
+FORMS    += src/mainwindow.ui
 
 RESOURCES += \
-    qammer.qrc
+    src/qammer.qrc
