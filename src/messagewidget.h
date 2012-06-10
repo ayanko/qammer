@@ -14,6 +14,9 @@ class MessageWidget : public QWidget
 public:
     explicit MessageWidget(QWidget *parent = 0);
     ~MessageWidget();
+
+    void setTitle(const QString &text);
+    void setContent(const QString &text);
     
 private:
     Ui::MessageWidget *ui;

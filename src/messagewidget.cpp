@@ -12,3 +12,14 @@ MessageWidget::~MessageWidget()
 {
     delete ui;
 }
+
+void MessageWidget::setTitle(const QString &text)
+{
+  ui->labelTitle->setText(text);
+
+}
+void MessageWidget::setContent(const QString &text)
+{
+  ui->labelContent->setText(text);
+
+}
