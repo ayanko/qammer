@@ -4,10 +4,9 @@
 #include <QWebView>
 #include <QSettings>
 
-#define YAMMER_OAUTH_URL        "https://www.yammer.com/dialog/oauth"
-#define YAMMER_APP_CLIENT_ID    "bXogiH2xwPH95u4nnxJfQ"
+#define YAMMER_OAUTH_URL "https://www.yammer.com/dialog/oauth"
+#define YAMMER_APP_CLIENT_ID "bXogiH2xwPH95u4nnxJfQ"
 #define YAMMER_APP_REDIRECT_URL "http://localhost"
-#define YAMMER_API_BASE_URL     "https://www.yammer.com/api/v1"
 
 LoginDialog::LoginDialog(QWidget *parent) :
     QDialog(parent),

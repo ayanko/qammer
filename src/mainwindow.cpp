@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "client.h"
 #include "logindialog.h"
 #include "messagewidget.h"
 
@@ -38,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     item1->setSizeHint(message1->size());
     item2->setSizeHint(message2->size());
+
+    m_pClient = new Client(this);
 }
 
 MainWindow::~MainWindow()
@@ -93,4 +96,9 @@ void MainWindow::login()
 void MainWindow::loggedIn()
 {
     m_pTrayIcon->showMessage(tr("Congrats!"), tr("Successfully logged into Yammer!"));
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    m_pClient->fetchMessages();
 }

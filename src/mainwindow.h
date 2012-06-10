@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 
+class Client;
 class LoginDialog;
 
 namespace Ui {
@@ -17,6 +18,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    Client *client();
     void login();
 
 public slots:
@@ -26,6 +28,8 @@ private slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void loggedIn();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon *m_pTrayIcon;
@@ -33,6 +37,7 @@ private:
     QAction *m_pToggleAction;
     QAction *m_pQuitAction;
 
+    Client* m_pClient;
     LoginDialog *m_pLoginDialog;
 
     void createTrayActions();
