@@ -14,5 +14,7 @@ In progress ...
 
     $ git clone git@github.com:ayanko/qammer.git
     $ cd qammer
+    $ git submodule init
+    $ git submodule update
     $ ./build.sh
     $ sudo ./install.sh

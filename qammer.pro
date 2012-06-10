@@ -13,10 +13,12 @@ TEMPLATE = app
 
 SOURCES += src/main.cpp\
         src/mainwindow.cpp \
-    src/logindialog.cpp
+    src/logindialog.cpp \
+    qt-json/json.cpp
 
 HEADERS  += src/mainwindow.h \
-    src/logindialog.h
+    src/logindialog.h \
+    qt-json/json.h
 
 FORMS    += src/mainwindow.ui \
     src/logindialog.ui
