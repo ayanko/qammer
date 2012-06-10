@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/yammer_logo.png</file>
+        <file>images/no_photo.jpg</file>
+    </qresource>
+</RCC>

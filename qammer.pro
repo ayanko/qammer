@@ -14,14 +14,17 @@ TEMPLATE = app
 SOURCES += src/main.cpp\
         src/mainwindow.cpp \
     src/logindialog.cpp \
-    qt-json/json.cpp
+    qt-json/json.cpp \
+    src/messagewidget.cpp
 
 HEADERS  += src/mainwindow.h \
     src/logindialog.h \
-    qt-json/json.h
+    qt-json/json.h \
+    src/messagewidget.h
 
 FORMS    += src/mainwindow.ui \
-    src/logindialog.ui
+    src/logindialog.ui \
+    src/messagewidget.ui
 
 RESOURCES += \
-    src/qammer.qrc
+    qammer.qrc
