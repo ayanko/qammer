@@ -11,16 +11,11 @@
 Client::Client(QObject *parent) :
     QObject(parent)
 {
-    qDebug() << "one";
     m_strMessagesUrl = QString(YAMMER_API_BASE_URL).append("/messages.json");
 
-    qDebug() << "two";
     m_pNetworkManager = new QNetworkAccessManager(this);
 
-    qDebug() << "three";
     connect(m_pNetworkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-
-    qDebug() << "four";
 }
 
 QList<Message*> Client::messages()
@@ -36,20 +31,13 @@ QString Client::accessToken()
 
 void Client::fetchMessages()
 {
-    qDebug() << "fetchMessages()" << m_strMessagesUrl;
     QUrl url(m_strMessagesUrl);
-    qDebug() << "fetchMessages()2";
     url.addQueryItem("access_token", accessToken());
-    qDebug() << "fetchMessages()4";
-    qDebug() << "fetchMessages()5" << url.toString();
     m_pNetworkManager->get(QNetworkRequest(url));
-    qDebug() << "END";
 }
 
 void Client::replyFinished(QNetworkReply* reply)
 {
-    qDebug() << "replyFinished()";
-
     QString url = reply->url().toString();
 
     if(reply->error() != QNetworkReply::NoError) {
@@ -68,7 +56,6 @@ void Client::parseMessages(const QByteArray &data)
 {
     bool ok;
 
-    qDebug() << data;
     QVariant result = QtJson::Json::parse(data, ok); 
 
     if(!ok) {

@@ -17,6 +17,7 @@ public:
 
     void setTitle(const QString &text);
     void setContent(const QString &text);
+    void setStatus(const QString &text);
     
 private:
     Ui::MessageWidget *ui;

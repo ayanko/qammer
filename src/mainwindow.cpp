@@ -24,24 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     createLoginDialog();
     connect(m_pLoginDialog, SIGNAL(loggedIn()), this, SLOT(loggedIn()));
 
-    ui->listWidgetMessages->clear();
-
-    MessageWidget* message1 = new MessageWidget(this);
-    MessageWidget* message2 = new MessageWidget(this);
-    message1->setTitle("<b>Jack Daniels</b>");
-    
-    message1->setContent("If you are doing something custom, you could override QLabel::sizeHint() and return appropriate size for the widget (or maybe just set minimumSize). You may call QWidget::updateGeometry() to notify the layout system about the geometry change. (2) If you are doing something custom, you could override QLabel::sizeHint() and return appropriate size for the widget (or maybe just set minimumSize). You may call QWidget::updateGeometry() to notify the layout system about the geometry change (/2)");
-    message1->adjustSize();
-
-    QListWidgetItem* item1 = new QListWidgetItem(ui->listWidgetMessages);
-    QListWidgetItem* item2 = new QListWidgetItem(ui->listWidgetMessages);
-
-    ui->listWidgetMessages->setItemWidget(item1, message1);
-    ui->listWidgetMessages->setItemWidget(item2, message2);
-
-    item1->setSizeHint(message1->size());
-    item2->setSizeHint(message2->size());
-
     m_pClient = new Client(this);
     connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(updateMessageList()));
 }
@@ -111,9 +93,20 @@ void MainWindow::updateMessageList()
     ui->listWidgetMessages->clear();
 
     foreach(Message* message, m_pClient->messages()) {
+        QString title;
+        title.append("<b>");
+        title.append(QString::number(message->senderId()));
+        title.append("</b>");
+
+        QString status;
+        status.append("<i>");
+        status.append(message->createdAt());
+        status.append("</i>");
+
         MessageWidget* messageWidget = new MessageWidget(this);
-        messageWidget->setTitle("<b>Jack Daniels</b>");
+        messageWidget->setTitle(title);
         messageWidget->setContent(message->bodyRich());
+        messageWidget->setStatus(status);
         messageWidget->adjustSize();
 
         QListWidgetItem* item = new QListWidgetItem(ui->listWidgetMessages);

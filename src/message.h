@@ -16,6 +16,7 @@ public:
     QString bodyRich();
     QString createdAt();
     qlonglong threadId();
+    qlonglong senderId();
 signals:
     
 public slots:
@@ -27,6 +28,7 @@ private:
     QString m_strBodyRich;
     QString m_strCreatedAt;
     qlonglong m_llTreadId;
+    qlonglong m_llSenderId;
 };
 
 #endif // MESSAGE_H

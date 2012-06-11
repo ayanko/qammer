@@ -15,11 +15,16 @@ MessageWidget::~MessageWidget()
 
 void MessageWidget::setTitle(const QString &text)
 {
-  ui->labelTitle->setText(text);
+    ui->labelTitle->setText(text);
 
 }
+
 void MessageWidget::setContent(const QString &text)
 {
-  ui->labelContent->setText(text);
+    ui->labelContent->setText(text);
+}
 
+void MessageWidget::setStatus(const QString &text)
+{
+    ui->labelStatus->setText(text);
 }
