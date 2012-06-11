@@ -33,13 +33,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(popupMessages()));
 
     m_pTimer = new QTimer(this);
-    m_pTimer->start(60000);
+    m_pTimer->start(30000);
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(timeOut()));
     timeOut();
 
     QMovie *movie = new QMovie(":images/spinner.gif");
     ui->labelSpinner->setMovie(movie);
     movie->start();
+
+    restoreSettings();
 }
 
 MainWindow::~MainWindow()
@@ -96,11 +98,6 @@ void MainWindow::login()
 void MainWindow::loggedIn()
 {
     m_pTrayIcon->showMessage(tr("Congrats!"), tr("Successfully logged into Yammer!"));
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-    timeOut();
 }
 
 void MainWindow::updateMessageList()
@@ -164,6 +161,22 @@ void MainWindow::popupMessages()
 
 void MainWindow::timeOut()
 {
-      ui->stackedWidget->setCurrentIndex(0);
-      m_pClient->fetchMessages();
+    ui->stackedWidget->setCurrentIndex(0);
+    m_pClient->fetchMessages();
+}
+
+void MainWindow::restoreSettings()
+{
+    QSettings settings;
+    restoreGeometry(settings.value("geometry").toByteArray());
+    restoreState(settings.value("windowState").toByteArray());
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    QSettings settings;
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("windowState", saveState());
+    settings.sync();
+    QMainWindow::closeEvent(event);
 }

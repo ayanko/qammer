@@ -22,6 +22,10 @@ public:
     Client *client();
     void login();
 
+protected:
+    void restoreSettings();
+    void closeEvent(QCloseEvent *event);
+
 public slots:
     void toggle();
     void updateMessageList();
@@ -31,8 +35,6 @@ private slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void loggedIn();
     void timeOut();
-
-    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

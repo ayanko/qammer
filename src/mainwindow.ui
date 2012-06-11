@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>515</height>
+    <width>400</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -34,10 +34,10 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="1">
+    <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="pageSpinner">
        <layout class="QGridLayout" name="gridLayout_3">
@@ -60,12 +60,6 @@
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="1">
          <widget class="QListWidget" name="listWidgetMessages">
-          <property name="minimumSize">
-           <size>
-            <width>500</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="verticalScrollMode">
            <enum>QAbstractItemView::ScrollPerPixel</enum>
           </property>
@@ -78,49 +72,6 @@
       </widget>
      </widget>
     </item>
-    <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout1">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
-      </property>
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>My Feed</string>
-        </property>
-        <property name="checkable">
-         <bool>false</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="text">
-         <string>Members</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -128,7 +79,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>400</width>
      <height>22</height>
     </rect>
    </property>
