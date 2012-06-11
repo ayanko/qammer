@@ -76,10 +76,8 @@ void Client::parseMessages(const QByteArray &data)
       exit(1);
     }
 
-//--------------------------------------------------
-//     while (!m_tMessages.isEmpty())
-//      delete m_tMessages.takeFirst();
-//-------------------------------------------------- 
+    while (!m_tMessages.isEmpty())
+     delete m_tMessages.takeFirst();
 
     foreach (QVariant item, result.toMap().value("messages").toList()) {
         m_tMessages.append(new Message(item));

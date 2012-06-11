@@ -10,10 +10,23 @@ class Message : public QObject
 public:
     explicit Message(QVariant attrs, QObject *parent = 0);
     
+    QString webUrl();
+    QString bodyPlain();
+    QString bodyParsed();
+    QString bodyRich();
+    QString createdAt();
+    qlonglong threadId();
 signals:
     
 public slots:
-    
+
+private:
+    QString m_strWebUrl;
+    QString m_strBodyPlain;
+    QString m_strBodyParsed;
+    QString m_strBodyRich;
+    QString m_strCreatedAt;
+    qlonglong m_llTreadId;
 };
 
 #endif // MESSAGE_H

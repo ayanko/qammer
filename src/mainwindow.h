@@ -23,6 +23,7 @@ public:
 
 public slots:
     void toggle();
+    void updateMessageList();
 
 private slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);

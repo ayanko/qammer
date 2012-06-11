@@ -1,9 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QList>
 #include "client.h"
 #include "logindialog.h"
 #include "messagewidget.h"
+#include "message.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -41,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     item2->setSizeHint(message2->size());
 
     m_pClient = new Client(this);
+    connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(updateMessageList()));
 }
 
 MainWindow::~MainWindow()
@@ -101,4 +104,20 @@ void MainWindow::loggedIn()
 void MainWindow::on_pushButton_clicked()
 {
     m_pClient->fetchMessages();
+}
+
+void MainWindow::updateMessageList()
+{
+    ui->listWidgetMessages->clear();
+
+    foreach(Message* message, m_pClient->messages()) {
+        MessageWidget* messageWidget = new MessageWidget(this);
+        messageWidget->setTitle("<b>Jack Daniels</b>");
+        messageWidget->setContent(message->bodyRich());
+        messageWidget->adjustSize();
+
+        QListWidgetItem* item = new QListWidgetItem(ui->listWidgetMessages);
+        ui->listWidgetMessages->setItemWidget(item, messageWidget);
+        item->setSizeHint(messageWidget->size());
+    }
 }
