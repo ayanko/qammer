@@ -3,5 +3,6 @@
         <file>images/yammer_logo.png</file>
         <file>images/no_photo.jpg</file>
         <file>images/spinner.gif</file>
+        <file>images/yammer_notify.png</file>
     </qresource>
 </RCC>

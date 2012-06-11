@@ -79,6 +79,7 @@ void MainWindow::toggle() {
 void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger) this->toggle();
+    m_pTrayIcon->setIcon(QIcon(":/images/yammer_logo.png"));
 }
 
 void MainWindow::createLoginDialog()
@@ -155,6 +156,7 @@ void MainWindow::popupMessages()
 
     Message* message = m_pClient->messages().first();
     if (message->id() > last_message_id) {
+        m_pTrayIcon->setIcon(QIcon(":/images/yammer_notify.png"));
         m_pTrayIcon->showMessage(message->createdAt(), message->bodyPlain());
         settings.setValue("last_message_id", QString::number(message->id()));
     }
