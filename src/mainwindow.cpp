@@ -156,6 +156,7 @@ void MainWindow::popupMessages()
         m_pTrayIcon->setIcon(QIcon(":/images/yammer_notify.png"));
         m_pTrayIcon->showMessage(message->createdAt(), message->bodyPlain());
         settings.setValue("last_message_id", QString::number(message->id()));
+        settings.sync();
     }
 }
 
