@@ -29,9 +29,6 @@
    <iconset resource="../qammer.qrc">
     <normaloff>:/images/yammer_logo.png</normaloff>:/images/yammer_logo.png</iconset>
   </property>
-  <property name="toolTip">
-   <string>Yammer client</string>
-  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">

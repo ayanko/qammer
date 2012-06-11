@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     movie->start();
 
     restoreSettings();
+    ui->stackedWidget->setCurrentIndex(1);
 }
 
 MainWindow::~MainWindow()
@@ -102,6 +103,7 @@ void MainWindow::loggedIn()
 
 void MainWindow::updateMessageList()
 {
+    statusBar()->showMessage(tr("Updating ..."));
     ui->listWidgetMessages->clear();
 
     foreach(Message* message, m_pClient->messages()) {
@@ -143,7 +145,9 @@ void MainWindow::updateMessageList()
         ui->listWidgetMessages->setItemWidget(item, messageWidget);
         item->setSizeHint(messageWidget->size());
     }
-    ui->stackedWidget->setCurrentIndex(1);
+
+    statusBar()->clearMessage();
+    //ui->stackedWidget->setCurrentIndex(1);
 }
 
 void MainWindow::popupMessages()
@@ -162,7 +166,8 @@ void MainWindow::popupMessages()
 
 void MainWindow::timeOut()
 {
-    ui->stackedWidget->setCurrentIndex(0);
+    //ui->stackedWidget->setCurrentIndex(0);
+    statusBar()->showMessage(tr("Fetching data ..."));
     m_pClient->fetchMessages();
 }
 
