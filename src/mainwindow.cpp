@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QList>
 #include <QMovie>
+#include <QSettings>
 
 #include "client.h"
 #include "logindialog.h"
@@ -29,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_pClient = new Client(this);
     connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(updateMessageList()));
+    connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(popupMessages()));
 
     m_pTimer = new QTimer(this);
     m_pTimer->start(60000);
@@ -148,6 +150,18 @@ void MainWindow::updateMessageList()
         item->setSizeHint(messageWidget->size());
     }
     ui->stackedWidget->setCurrentIndex(1);
+}
+
+void MainWindow::popupMessages()
+{
+    QSettings settings;
+    qint32 last_message_id = settings.value("last_message_id").toInt();
+
+    Message* message = m_pClient->messages().first();
+    if (message->id() > last_message_id) {
+        m_pTrayIcon->showMessage(message->createdAt(), message->bodyPlain());
+        settings.setValue("last_message_id", QString::number(message->id()));
+    }
 }
 
 void MainWindow::timeOut()
