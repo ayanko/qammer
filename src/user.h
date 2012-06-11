@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QPixmap>
 
 class User : public QObject
 {
@@ -20,6 +21,7 @@ private:
     QString m_strFullName;
     QString m_strMugshotUrl;
     QString m_strWebUrl;
+    QPixmap m_pMugshot;
 
 public:
     qlonglong id() { return m_llId; }
@@ -27,6 +29,7 @@ public:
     QString fullName() { return m_strFullName; }
     QString mugshotUrl() { return m_strMugshotUrl; }
     QString webUrl() { return m_strWebUrl; }
+    QPixmap mugshot() { return m_pMugshot; } 
 };
 
 #endif // USER_H

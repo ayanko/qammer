@@ -29,6 +29,11 @@ void MessageWidget::showChildren()
     ui->listWidgetMessages->show();
 }
 
+void MessageWidget::setMugshot(const QPixmap &pixmap)
+{
+    ui->labelMugshot->setPixmap(pixmap);
+}
+
 void MessageWidget::setTitle(const QString &text)
 {
     ui->labelTitle->setText(text);
@@ -67,6 +72,9 @@ void MessageWidget::setMessage(Message* message)
     status.append(message->createdAt());
     status.append("</i>");
 
+    if (message->user()) {
+        setMugshot(message->user()->mugshot());
+    }
     setTitle(title);
     setContent(message->bodyRich());
     setStatus(status);
