@@ -30,6 +30,8 @@ public:
     QString mugshotUrl() { return m_strMugshotUrl; }
     QString webUrl() { return m_strWebUrl; }
     QPixmap mugshot() { return m_pMugshot; } 
+
+    void setMugshot(const QPixmap& pixmap);
 };
 
 #endif // USER_H

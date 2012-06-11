@@ -46,5 +46,10 @@ User::User(QVariant attrs, QObject *parent) :
     m_strMugshotUrl = hash.value("mugshot_url").toString();
     m_strWebUrl = hash.value("web_url").toString();
 
-    m_pMugshot.load(":/images/no_photo.png");
+    m_pMugshot.load(":/images/no_photo.jpg");
+}
+
+void User::setMugshot(const QPixmap& pixmap)
+{
+    m_pMugshot = pixmap;
 }

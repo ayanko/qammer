@@ -17,8 +17,13 @@ Client::Client(QObject *parent) :
     m_strUsersUrl = QString(YAMMER_API_BASE_URL).append("/users.json");
 
     m_pNetworkManager = new QNetworkAccessManager(this);
-
     connect(m_pNetworkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+
+    m_pCacheManager = new QNetworkAccessManager(this);
+    m_pNetworkCache = new QNetworkDiskCache(this);
+    m_pNetworkCache->setCacheDirectory("cacheDir");
+    m_pCacheManager->setCache(m_pNetworkCache);
+    connect(m_pCacheManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(cachedReplyFinished(QNetworkReply*)));
 }
 
 QList<Message*> Client::messages()
@@ -70,6 +75,30 @@ void Client::replyFinished(QNetworkReply* reply)
     } else {
         qDebug() << "Unknown url:" << url;
     }
+    reply->deleteLater();
+}
+
+void Client::cachedReplyFinished(QNetworkReply* reply)
+{
+    QString url = reply->url().toString();
+
+    qDebug() << "cachedReplyFinished:" << url;
+
+    if(reply->error() != QNetworkReply::NoError) {
+        qDebug() << "Error" << reply->error();
+        return;
+    }
+
+    QByteArray data = reply->readAll();
+    foreach(User* user, m_tUsers.values()) {
+        if (user->mugshotUrl() == url) {
+            QPixmap pixmap;
+            pixmap.loadFromData(data);
+            user->setMugshot(pixmap);
+        }
+    }
+
+    reply->deleteLater();
 }
 
 void Client::parseMessages(const QByteArray &data)
@@ -137,6 +166,7 @@ void Client::parseUsers(const QByteArray &data)
 
     foreach (QVariant item, result.toList()) {
         User* user = new User(item);
+        m_pCacheManager->get(QNetworkRequest(user->mugshotUrl()));
         m_tUsers[user->id()] = user;
     }
 

@@ -57,9 +57,11 @@ void MessageWidget::setMessage(Message* message)
     title.append("<b>");
     if (message->user()) {
       title.append(message->user()->fullName());
-    } else {
-      title.append(QString::number(message->senderId()));
     }
+    title.append(" (");
+    title.append(QString::number(message->senderId()));
+    title.append(")");
+    
     title.append("</b>");
     title.append(" id(");
     title.append(QString::number(message->id()));

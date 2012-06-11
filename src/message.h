@@ -14,15 +14,6 @@ public:
 
     void addChild(Message* message);
     QList<Message*> children();
-
-    QString webUrl();
-    QString bodyPlain();
-    QString bodyParsed();
-    QString bodyRich();
-    QString createdAt();
-    qlonglong id();
-    qlonglong threadId();
-    qlonglong senderId();
 signals:
     
 public slots:
@@ -43,6 +34,15 @@ private:
 public:
     User* user() { return m_pUser; }
     void setUser(User* user) { m_pUser = user; }
+
+    qlonglong id() { return m_llId; }
+    qlonglong threadId() { return m_llTreadId; }
+    qlonglong senderId() { return m_llSenderId; }
+    QString webUrl() { return m_strWebUrl; }
+    QString bodyPlain() { return m_strBodyPlain; }
+    QString bodyParsed() { return m_strBodyParsed; }
+    QString bodyRich() { return m_strBodyRich; }
+    QString createdAt() { return m_strCreatedAt; }
 };
 
 #endif // MESSAGE_H

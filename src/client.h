@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QNetworkAccessManager>
+#include <QNetworkDiskCache>
 #include <QNetworkReply>
 
 class Message;
@@ -33,9 +34,12 @@ public slots:
 
 private slots:
     void replyFinished(QNetworkReply* reply);
+    void cachedReplyFinished(QNetworkReply* reply);
 
 private:
     QNetworkAccessManager* m_pNetworkManager;
+    QNetworkAccessManager* m_pCacheManager;
+    QNetworkDiskCache* m_pNetworkCache;
 
     QString m_strMessagesUrl;
     QString m_strUsersUrl;

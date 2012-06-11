@@ -24,47 +24,8 @@ void Message::addChild(Message* message)
     m_pChildren.append(message);
 }
 
-QList<Message*> Message::children()
+QList<Message*> Message::children() 
 {
   return m_pChildren;
 }
 
-QString Message::webUrl()
-{
-    return m_strWebUrl;
-}
-
-QString Message::bodyPlain()
-{
-    return m_strBodyPlain;
-}
-
-QString Message::bodyParsed()
-{
-    return m_strBodyParsed;
-}
-
-QString Message::bodyRich()
-{
-    return m_strBodyRich;
-}
-
-QString Message::createdAt()
-{
-    return m_strCreatedAt;
-}
-
-qlonglong Message::id()
-{
-    return m_llId;
-}
-
-qlonglong Message::threadId()
-{
-    return m_llTreadId;
-}
-
-qlonglong Message::senderId()
-{
-    return m_llSenderId;
-}
