@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>461</width>
-    <height>291</height>
+    <width>317</width>
+    <height>274</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -75,6 +75,9 @@
        <property name="textFormat">
         <enum>Qt::RichText</enum>
        </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
        <property name="textInteractionFlags">
         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
        </property>
@@ -93,7 +96,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>200</width>
+         <width>100</width>
          <height>0</height>
         </size>
        </property>
@@ -128,6 +131,9 @@
        <property name="text">
         <string/>
        </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -137,6 +143,9 @@
        </property>
        <property name="horizontalScrollMode">
         <enum>QAbstractItemView::ScrollPerPixel</enum>
+       </property>
+       <property name="resizeMode">
+        <enum>QListView::Adjust</enum>
        </property>
       </widget>
      </item>

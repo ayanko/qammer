@@ -3,6 +3,7 @@
 
 #include <QWebView>
 #include <QSettings>
+#include <QDebug>
 
 #define YAMMER_OAUTH_URL "https://www.yammer.com/dialog/oauth"
 #define YAMMER_APP_CLIENT_ID "bXogiH2xwPH95u4nnxJfQ"
@@ -31,6 +32,8 @@ LoginDialog::~LoginDialog()
 
 void LoginDialog::urlChanged(const QUrl &url)
 {
+    qDebug() << "[LoginDialog::urlChanged]" << url.toString();
+
     QSettings settings;
 
     QStringList list = url.fragment().split("=");

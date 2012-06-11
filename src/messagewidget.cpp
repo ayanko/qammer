@@ -52,27 +52,20 @@ void MessageWidget::setStatus(const QString &text)
 void MessageWidget::setMessage(Message* message)
 {
     QString title;
-    QString status;
 
-    title.append("<b>");
     if (message->user()) {
+      title.append("<b>");
       title.append(message->user()->fullName());
+      title.append("</b>");
     }
-    title.append(" (");
-    title.append(QString::number(message->senderId()));
-    title.append(")");
-    
-    title.append("</b>");
-    title.append(" id(");
-    title.append(QString::number(message->id()));
-    title.append(")");
-    title.append(" thread(");
-    title.append(QString::number(message->threadId()));
-    title.append(")");
 
+    QString status;
     status.append("<i>");
     status.append(message->createdAt());
-    status.append("</i>");
+    status.append("</i> ");
+    status.append("<a href=\"");
+    status.append(message->webUrl()); 
+    status.append("\">View</a>");
 
     if (message->user()) {
         setMugshot(message->user()->mugshot());
