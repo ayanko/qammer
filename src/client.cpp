@@ -5,6 +5,7 @@
 #include "../qt-json/json.h"
 #include <QSettings>
 #include <QUrl>
+#include <QDir>
 #include <QFile>
 #include <QDebug>
 
@@ -13,6 +14,8 @@
 Client::Client(QObject *parent) :
     QObject(parent)
 {
+    QString cacheDir = QDir::homePath().append("/.qammer/cache");
+
     m_strMessagesUrl = QString(YAMMER_API_BASE_URL).append("/messages.json");
     m_strUsersUrl = QString(YAMMER_API_BASE_URL).append("/users.json");
 
@@ -21,7 +24,7 @@ Client::Client(QObject *parent) :
 
     m_pCacheManager = new QNetworkAccessManager(this);
     m_pNetworkCache = new QNetworkDiskCache(this);
-    m_pNetworkCache->setCacheDirectory("cacheDir");
+    m_pNetworkCache->setCacheDirectory(cacheDir);
     m_pCacheManager->setCache(m_pNetworkCache);
     connect(m_pCacheManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(cachedReplyFinished(QNetworkReply*)));
 }
