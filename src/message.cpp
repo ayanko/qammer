@@ -1,4 +1,5 @@
 #include "message.h"
+#include "user.h"
 
 #include <QDebug>
 /*
@@ -9,6 +10,7 @@ Message::Message(QVariant attrs, QObject *parent) :
 {
     QVariantMap hash = attrs.toMap();
 
+    m_pUser = NULL;
     m_llId = hash.value("id").toLongLong();
     m_llTreadId = hash.value("thread_id").toLongLong();
     m_llSenderId = hash.value("sender_id").toLongLong();
@@ -29,3 +31,7 @@ QList<Message*> Message::children()
   return m_pChildren;
 }
 
+QString Message::senderName()
+{
+    return(m_pUser ? m_pUser->fullName() : "Unknown Sender");
+}

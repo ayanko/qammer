@@ -43,6 +43,8 @@ public:
     QString bodyParsed() { return m_strBodyParsed; }
     QString bodyRich() { return m_strBodyRich; }
     QString createdAt() { return m_strCreatedAt; }
+
+    QString senderName();
 };
 
 #endif // MESSAGE_H

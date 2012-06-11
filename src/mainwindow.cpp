@@ -171,7 +171,7 @@ void MainWindow::popupMessages()
     if (message && message->id() > last_message_id) {
         ui->pushButtonUpdateMessages->show();
         m_pTrayIcon->setIcon(QIcon(":/images/yammer_notify.png"));
-        m_pTrayIcon->showMessage(message->createdAt(), message->bodyPlain());
+        m_pTrayIcon->showMessage(message->senderName(), message->bodyPlain());
         settings.setValue("last_message_id", QString::number(message->id()));
         settings.sync();
     }
