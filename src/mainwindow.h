@@ -25,6 +25,7 @@ public:
 protected:
     void restoreSettings();
     void closeEvent(QCloseEvent *event);
+    void clearMessageWidgets();
 
 public slots:
     void toggle();

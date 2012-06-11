@@ -5,6 +5,7 @@
 #include <QList>
 #include <QMovie>
 #include <QSettings>
+#include <QLayoutItem>
 
 #include "client.h"
 #include "logindialog.h"
@@ -18,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->pushButtonUpdateMessages->hide();
+    ui->scrollArea->setBackgroundRole(QPalette::Base);
 
     this->createTrayActions();
     this->createTrayMenu();
@@ -113,13 +115,24 @@ void MainWindow::loggedIn()
     m_pTrayIcon->showMessage(tr("Congrats!"), tr("Successfully logged into Yammer!"));
 }
 
+void MainWindow::clearMessageWidgets()
+{
+    QLayoutItem* item;
+    while(( item = ui->verticalLayout->takeAt(0)) != 0)
+    {
+        delete item->widget();
+        delete item;
+    }
+}
+
 void MainWindow::updateMessageList()
 {
     ui->pushButtonUpdateMessages->hide();
     m_pTrayIcon->setIcon(QIcon(":/images/yammer_logo.png"));
 
     statusBar()->showMessage(tr("Updating ..."));
-    ui->listWidgetMessages->clear();
+    //ui->listWidgetMessages->clear();
+    clearMessageWidgets();
 
     foreach(Message* message, m_pClient->messages()) {
         MessageWidget* messageWidget = new MessageWidget(this);
@@ -132,13 +145,14 @@ void MainWindow::updateMessageList()
                 messageChildWidget->adjustSize();
                 messageWidget->addChild(messageChildWidget);
             }
-            messageWidget->showChildren();
+            //messageWidget->showChildren();
         }
-        messageWidget->adjustSize();
+        //messageWidget->adjustSize();
 
-        QListWidgetItem* item = new QListWidgetItem(ui->listWidgetMessages);
-        ui->listWidgetMessages->setItemWidget(item, messageWidget);
-        item->setSizeHint(messageWidget->size());
+        ui->verticalLayout->addWidget(messageWidget);
+        //QListWidgetItem* item = new QListWidgetItem(ui->listWidgetMessages);
+        //ui->listWidgetMessages->setItemWidget(item, messageWidget);
+        // item->setSizeHint(messageWidget->size());
     }
 
     statusBar()->clearMessage();
@@ -161,7 +175,8 @@ void MainWindow::popupMessages()
         settings.setValue("last_message_id", QString::number(message->id()));
         settings.sync();
     }
-    if (ui->listWidgetMessages->count() == 0) {
+    //if (ui->listWidgetMessages->count() == 0) {
+    if (ui->verticalLayout->count() == 0) {
         this->updateMessageList();
     }
 }

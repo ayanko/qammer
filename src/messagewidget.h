@@ -17,6 +17,8 @@ public:
     explicit MessageWidget(QWidget *parent = 0);
     ~MessageWidget();
 
+    void clearMessageWidgets();
+
     void setMugshot(const QPixmap &pixmap);
     void setTitle(const QString &text);
     void setContent(const QString &text);
