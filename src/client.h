@@ -17,6 +17,7 @@ public:
 
     QString accessToken();
     QList<Message*> messages();
+    Message* recentMessage();
 
 signals:
     void messagesReceived();

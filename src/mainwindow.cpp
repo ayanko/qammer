@@ -151,8 +151,8 @@ void MainWindow::popupMessages()
     QSettings settings;
     qint32 last_message_id = settings.value("last_message_id").toInt();
 
-    Message* message = m_pClient->messages().first();
-    if (message->id() > last_message_id) {
+    Message* message = m_pClient->recentMessage();
+    if (message && message->id() > last_message_id) {
         m_pTrayIcon->setIcon(QIcon(":/images/yammer_notify.png"));
         m_pTrayIcon->showMessage(message->createdAt(), message->bodyPlain());
         settings.setValue("last_message_id", QString::number(message->id()));

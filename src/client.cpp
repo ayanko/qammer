@@ -91,3 +91,16 @@ void Client::parseMessages(const QByteArray &data)
     
     emit messagesReceived();
 }
+
+Message* Client::recentMessage()
+{
+    if (m_tMessages.empty())
+      return NULL;
+
+    Message* message = m_tMessages.first();
+
+    if (message->children().empty())
+      return message;
+
+    return message->children().first();
+}
