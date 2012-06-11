@@ -17,14 +17,16 @@ SOURCES += src/main.cpp\
     qt-json/json.cpp \
     src/messagewidget.cpp \
     src/client.cpp \
-    src/message.cpp
+    src/message.cpp \
+    src/user.cpp
 
 HEADERS  += src/mainwindow.h \
     src/logindialog.h \
     qt-json/json.h \
     src/messagewidget.h \
     src/client.h \
-    src/message.h
+    src/message.h \
+    src/user.h
 
 FORMS    += src/mainwindow.ui \
     src/logindialog.ui \

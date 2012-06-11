@@ -1,5 +1,6 @@
 #include "client.h"
 #include "message.h"
+#include "user.h"
 
 #include "../qt-json/json.h"
 #include <QSettings>
@@ -13,6 +14,7 @@ Client::Client(QObject *parent) :
     QObject(parent)
 {
     m_strMessagesUrl = QString(YAMMER_API_BASE_URL).append("/messages.json");
+    m_strUsersUrl = QString(YAMMER_API_BASE_URL).append("/users.json");
 
     m_pNetworkManager = new QNetworkAccessManager(this);
 
@@ -22,6 +24,11 @@ Client::Client(QObject *parent) :
 QList<Message*> Client::messages()
 {
     return m_tMessages;
+}
+
+QMap<qlonglong, User*> Client::users()
+{
+    return m_tUsers;
 }
 
 QString Client::accessToken()
@@ -38,6 +45,13 @@ void Client::fetchMessages()
     m_pNetworkManager->get(QNetworkRequest(url));
 }
 
+void Client::fetchUsers()
+{
+    QUrl url(m_strUsersUrl);
+    url.addQueryItem("access_token", accessToken());
+    m_pNetworkManager->get(QNetworkRequest(url));
+}
+
 void Client::replyFinished(QNetworkReply* reply)
 {
     QString url = reply->url().toString();
@@ -49,9 +63,13 @@ void Client::replyFinished(QNetworkReply* reply)
 
     QByteArray data = reply->readAll();
 
-    //if ( url == m_strMessagesUrl) {
+    if ( url.contains(m_strMessagesUrl) ) {
       parseMessages(data);
-    //}
+    } else if (url.contains(m_strUsersUrl) ) {
+      parseUsers(data);
+    } else {
+        qDebug() << "Unknown url:" << url;
+    }
 }
 
 void Client::parseMessages(const QByteArray &data)
@@ -72,24 +90,68 @@ void Client::parseMessages(const QByteArray &data)
     //}
 
     while (!m_tMessages.isEmpty())
-     delete m_tMessages.takeFirst();
+        delete m_tMessages.takeFirst();
 
     QVariantMap children_map = result.toMap().value("threaded_extended").toMap();
 
     foreach (QVariant item, result.toMap().value("messages").toList()) {
         Message* message = new Message(item);
+        message->setUser(findUserByMessage(message));
         QString threadId = QString::number(message->threadId());
 
         if (children_map.contains(threadId)) {
             foreach(QVariant child_item, children_map.value(threadId).toList()) {
                 Message* child = new Message(child_item, message);
+                child->setUser(findUserByMessage(child));
                 message->addChild(child);
             }
         }
         m_tMessages.append(message);
     }
     
+    qDebug() << "Received messages: " << m_tMessages.size();
     emit messagesReceived();
+}
+
+void Client::parseUsers(const QByteArray &data)
+{
+    bool ok;
+
+    QVariant result = QtJson::Json::parse(data, ok); 
+
+    QFile file("users.json");
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+      QTextStream out(&file);
+      out << data;
+    }
+
+    if(!ok) {
+      qFatal("An error occurred during parsing");
+      exit(1);
+    }
+
+    while (!m_tUsers.values().isEmpty())
+        delete m_tUsers.values().takeFirst();
+
+    m_tUsers.clear();
+
+    foreach (QVariant item, result.toList()) {
+        User* user = new User(item);
+        m_tUsers[user->id()] = user;
+    }
+
+    qDebug() << "Received users: " << m_tUsers.size();
+    emit usersReceived();
+}
+
+User* Client::findUserById(qlonglong id)
+{
+    return m_tUsers.value(id);
+}
+
+User* Client::findUserByMessage(Message* message)
+{
+    return findUserById(message->senderId());
 }
 
 Message* Client::recentMessage()

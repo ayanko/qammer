@@ -10,6 +10,7 @@
 #include "logindialog.h"
 #include "messagewidget.h"
 #include "message.h"
+#include "user.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -31,11 +32,13 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pClient = new Client(this);
     connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(updateMessageList()));
     connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(popupMessages()));
+    connect(m_pClient, SIGNAL(usersReceived()), this, SLOT(timeOut()));
 
     m_pTimer = new QTimer(this);
-    m_pTimer->start(30000);
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(timeOut()));
-    timeOut();
+
+    m_pTimer->setInterval(30000);
+    m_pTimer->start();
 
     QMovie *movie = new QMovie(":images/spinner.gif");
     ui->labelSpinner->setMovie(movie);
@@ -43,6 +46,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     restoreSettings();
     ui->stackedWidget->setCurrentIndex(1);
+
+    statusBar()->showMessage(tr("Fetching users ..."));
+    m_pClient->fetchUsers();
 }
 
 MainWindow::~MainWindow()
@@ -107,33 +113,13 @@ void MainWindow::updateMessageList()
     ui->listWidgetMessages->clear();
 
     foreach(Message* message, m_pClient->messages()) {
-        QString title;
-        title.append("<b>");
-        title.append(QString::number(message->senderId()));
-        title.append("</b>");
-        title.append(" id(");
-        title.append(QString::number(message->id()));
-        title.append(")");
-        title.append(" thread(");
-        title.append(QString::number(message->threadId()));
-        title.append(")");
-
-        QString status;
-        status.append("<i>");
-        status.append(message->createdAt());
-        status.append("</i>");
-
         MessageWidget* messageWidget = new MessageWidget(this);
-        messageWidget->setTitle(title);
-        messageWidget->setContent(message->bodyRich());
-        messageWidget->setStatus(status);
+        messageWidget->setMessage(message);
 
         if(!message->children().empty()) {
             foreach(Message* child, message->children()) {
                 MessageWidget* messageChildWidget = new MessageWidget(messageWidget);
-                //messageChildWidget->setTitle(title);
-                messageChildWidget->setContent(child->bodyRich());
-                //messageChildWidget->setStatus(status);
+                messageChildWidget->setMessage(child);
                 messageChildWidget->adjustSize();
                 messageWidget->addChild(messageChildWidget);
             }

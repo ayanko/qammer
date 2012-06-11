@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QVariant>
 
+class User;
+
 class Message : public QObject
 {
     Q_OBJECT
@@ -27,6 +29,7 @@ public slots:
 
 private:
     QList<Message*> m_pChildren;
+    User* m_pUser;
 
     QString m_strWebUrl;
     QString m_strBodyPlain;
@@ -36,6 +39,10 @@ private:
     qlonglong m_llId;
     qlonglong m_llTreadId;
     qlonglong m_llSenderId;
+
+public:
+    User* user() { return m_pUser; }
+    void setUser(User* user) { m_pUser = user; }
 };
 
 #endif // MESSAGE_H

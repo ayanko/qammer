@@ -7,6 +7,8 @@ namespace Ui {
 class MessageWidget;
 }
 
+class Message;
+
 class MessageWidget : public QWidget
 {
     Q_OBJECT
@@ -20,6 +22,7 @@ public:
     void setStatus(const QString &text);
     void showChildren();
     void addChild(MessageWidget* widget);
+    void setMessage(Message* message);
     
 private:
     Ui::MessageWidget *ui;
