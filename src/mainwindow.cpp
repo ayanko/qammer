@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QDebug>
 #include <QList>
 #include "client.h"
 #include "logindialog.h"
@@ -97,6 +98,12 @@ void MainWindow::updateMessageList()
         title.append("<b>");
         title.append(QString::number(message->senderId()));
         title.append("</b>");
+        title.append(" id(");
+        title.append(QString::number(message->id()));
+        title.append(")");
+        title.append(" thread(");
+        title.append(QString::number(message->threadId()));
+        title.append(")");
 
         QString status;
         status.append("<i>");
@@ -107,6 +114,22 @@ void MainWindow::updateMessageList()
         messageWidget->setTitle(title);
         messageWidget->setContent(message->bodyRich());
         messageWidget->setStatus(status);
+
+        qDebug() << "Message" << message->id();
+        qDebug() << message->children().empty();
+
+        if(!message->children().empty()) {
+            qDebug() << "Not empty children";
+            foreach(Message* child, message->children()) {
+                MessageWidget* messageChildWidget = new MessageWidget(messageWidget);
+                //messageChildWidget->setTitle(title);
+                messageChildWidget->setContent(child->bodyRich());
+                //messageChildWidget->setStatus(status);
+                messageChildWidget->adjustSize();
+                messageWidget->addChild(messageChildWidget);
+            }
+            messageWidget->showChildren();
+        }
         messageWidget->adjustSize();
 
         QListWidgetItem* item = new QListWidgetItem(ui->listWidgetMessages);

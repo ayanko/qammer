@@ -8,6 +8,7 @@ Message::Message(QVariant attrs, QObject *parent) :
 {
     QVariantMap hash = attrs.toMap();
 
+    m_llId = hash.value("id").toLongLong();
     m_llTreadId = hash.value("thread_id").toLongLong();
     m_llSenderId = hash.value("sender_id").toLongLong();
     m_strWebUrl = hash.value("web_url").toString();
@@ -15,6 +16,16 @@ Message::Message(QVariant attrs, QObject *parent) :
     m_strBodyParsed = hash.value("body").toMap().value("parsed").toString();
     m_strBodyRich = hash.value("body").toMap().value("rich").toString();
     m_strCreatedAt = hash.value("created_at").toString();
+}
+
+void Message::addChild(Message* message)
+{
+    m_pChildren.append(message);
+}
+
+QList<Message*> Message::children()
+{
+  return m_pChildren;
 }
 
 QString Message::webUrl()
@@ -40,6 +51,11 @@ QString Message::bodyRich()
 QString Message::createdAt()
 {
     return m_strCreatedAt;
+}
+
+qlonglong Message::id()
+{
+    return m_llId;
 }
 
 qlonglong Message::threadId()
