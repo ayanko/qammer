@@ -128,11 +128,7 @@ void MainWindow::updateMessageList()
         messageWidget->setContent(message->bodyRich());
         messageWidget->setStatus(status);
 
-        qDebug() << "Message" << message->id();
-        qDebug() << message->children().empty();
-
         if(!message->children().empty()) {
-            qDebug() << "Not empty children";
             foreach(Message* child, message->children()) {
                 MessageWidget* messageChildWidget = new MessageWidget(messageWidget);
                 //messageChildWidget->setTitle(title);

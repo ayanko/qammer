@@ -65,11 +65,11 @@ void Client::parseMessages(const QByteArray &data)
       exit(1);
     }
 
-    QFile file("messages.json");
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-      QTextStream out(&file);
-      out << data;
-    }
+    //QFile file("messages.json");
+    //if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    //  QTextStream out(&file);
+    //  out << data;
+    //}
 
     while (!m_tMessages.isEmpty())
      delete m_tMessages.takeFirst();
@@ -81,11 +81,9 @@ void Client::parseMessages(const QByteArray &data)
         QString threadId = QString::number(message->threadId());
 
         if (children_map.contains(threadId)) {
-            qDebug() << "Process threadId" << threadId;
             foreach(QVariant child_item, children_map.value(threadId).toList()) {
                 Message* child = new Message(child_item, message);
                 message->addChild(child);
-                qDebug() << message->children().size();
             }
         }
         m_tMessages.append(message);
