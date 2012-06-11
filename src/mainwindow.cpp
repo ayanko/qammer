@@ -3,6 +3,8 @@
 
 #include <QDebug>
 #include <QList>
+#include <QMovie>
+
 #include "client.h"
 #include "logindialog.h"
 #include "messagewidget.h"
@@ -27,6 +29,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_pClient = new Client(this);
     connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(updateMessageList()));
+
+    m_pTimer = new QTimer(this);
+    m_pTimer->start(60000);
+    connect(m_pTimer, SIGNAL(timeout()), this, SLOT(timeOut()));
+    timeOut();
+
+    QMovie *movie = new QMovie(":images/spinner.gif");
+    ui->labelSpinner->setMovie(movie);
+    movie->start();
 }
 
 MainWindow::~MainWindow()
@@ -86,7 +97,7 @@ void MainWindow::loggedIn()
 
 void MainWindow::on_pushButton_clicked()
 {
-    m_pClient->fetchMessages();
+    timeOut();
 }
 
 void MainWindow::updateMessageList()
@@ -136,4 +147,11 @@ void MainWindow::updateMessageList()
         ui->listWidgetMessages->setItemWidget(item, messageWidget);
         item->setSizeHint(messageWidget->size());
     }
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+void MainWindow::timeOut()
+{
+      ui->stackedWidget->setCurrentIndex(0);
+      m_pClient->fetchMessages();
 }

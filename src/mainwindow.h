@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QSystemTrayIcon>
+#include <QTimer>
 
 class Client;
 class LoginDialog;
@@ -28,6 +29,7 @@ public slots:
 private slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void loggedIn();
+    void timeOut();
 
     void on_pushButton_clicked();
 
@@ -37,6 +39,7 @@ private:
     QMenu *m_pTrayMenu;
     QAction *m_pToggleAction;
     QAction *m_pQuitAction;
+    QTimer *m_pTimer;
 
     Client* m_pClient;
     LoginDialog *m_pLoginDialog;
