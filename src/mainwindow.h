@@ -36,6 +36,8 @@ private slots:
     void loggedIn();
     void timeOut();
 
+    void on_pushButtonUpdateMessages_clicked();
+
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon *m_pTrayIcon;

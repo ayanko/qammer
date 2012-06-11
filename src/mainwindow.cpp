@@ -17,12 +17,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->pushButtonUpdateMessages->hide();
+
     this->createTrayActions();
     this->createTrayMenu();
     this->createTrayIcon();
 
     connect(m_pTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+    connect(m_pTrayIcon, SIGNAL(messageClicked()),
+            this, SLOT(updateMessageList()));
+    connect(m_pTrayIcon, SIGNAL(messageClicked()), this, SLOT(show()));
 
     m_pTrayIcon->show();
 
@@ -30,7 +35,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_pLoginDialog, SIGNAL(loggedIn()), this, SLOT(loggedIn()));
 
     m_pClient = new Client(this);
-    connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(updateMessageList()));
+    //connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(updateMessageList()));
+    //connect(m_pClient, SIGNAL(messagesReceived()), ui->pushButtonUpdateMessages, SLOT(show()));
+    //connect(m_pClient, SIGNAL(messagesReceived()), statusBar(), SLOT(clearMessage()));
     connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(popupMessages()));
     connect(m_pClient, SIGNAL(usersReceived()), this, SLOT(timeOut()));
 
@@ -88,7 +95,6 @@ void MainWindow::toggle() {
 void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger) this->toggle();
-    m_pTrayIcon->setIcon(QIcon(":/images/yammer_logo.png"));
 }
 
 void MainWindow::createLoginDialog()
@@ -109,6 +115,9 @@ void MainWindow::loggedIn()
 
 void MainWindow::updateMessageList()
 {
+    ui->pushButtonUpdateMessages->hide();
+    m_pTrayIcon->setIcon(QIcon(":/images/yammer_logo.png"));
+
     statusBar()->showMessage(tr("Updating ..."));
     ui->listWidgetMessages->clear();
 
@@ -133,6 +142,7 @@ void MainWindow::updateMessageList()
     }
 
     statusBar()->clearMessage();
+
     //ui->stackedWidget->setCurrentIndex(1);
 }
 
@@ -141,12 +151,18 @@ void MainWindow::popupMessages()
     QSettings settings;
     qint32 last_message_id = settings.value("last_message_id").toInt();
 
+    statusBar()->clearMessage();
+
     Message* message = m_pClient->recentMessage();
     if (message && message->id() > last_message_id) {
+        ui->pushButtonUpdateMessages->show();
         m_pTrayIcon->setIcon(QIcon(":/images/yammer_notify.png"));
         m_pTrayIcon->showMessage(message->createdAt(), message->bodyPlain());
         settings.setValue("last_message_id", QString::number(message->id()));
         settings.sync();
+    }
+    if (ui->listWidgetMessages->count() == 0) {
+        this->updateMessageList();
     }
 }
 
@@ -171,4 +187,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.setValue("windowState", saveState());
     settings.sync();
     QMainWindow::closeEvent(event);
+}
+
+void MainWindow::on_pushButtonUpdateMessages_clicked()
+{
+    updateMessageList();
 }
