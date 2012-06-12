@@ -101,7 +101,10 @@ void MainWindow::toggle() {
 
 void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
-    if (reason == QSystemTrayIcon::Trigger) this->toggle();
+    if (reason == QSystemTrayIcon::Trigger ||
+        reason == QSystemTrayIcon::DoubleClick) {
+        this->toggle();
+    }
 }
 
 void MainWindow::createLoginDialog()
