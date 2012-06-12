@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 #include <QTimer>
+#include <QIcon>
 
 class Client;
 class LoginDialog;
@@ -31,11 +32,14 @@ public slots:
     void toggle();
     void updateMessageList();
     void popupMessages();
+    void startTrayIconBlinking();
+    void stopTrayIconBlinking();
 
 private slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void loggedIn();
     void timeOut();
+    void trayIconTimeOut();
 
     void on_pushButtonUpdateMessages_clicked();
 
@@ -46,6 +50,10 @@ private:
     QAction *m_pToggleAction;
     QAction *m_pQuitAction;
     QTimer *m_pTimer;
+    QTimer *m_pTrayIconTimer;
+    QIcon m_IconNormal;
+    QIcon m_IconBlank;
+    bool m_bBlink;
 
     Client* m_pClient;
     LoginDialog *m_pLoginDialog;

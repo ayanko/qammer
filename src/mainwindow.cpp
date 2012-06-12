@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->pushButtonUpdateMessages->hide();
     ui->scrollArea->setBackgroundRole(QPalette::Base);
 
+    m_IconNormal.addFile(":/images/yammer_logo.png");
+
     this->createTrayActions();
     this->createTrayMenu();
     this->createTrayIcon();
@@ -49,9 +51,13 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pTimer->setInterval(30000);
     m_pTimer->start();
 
-    QMovie *movie = new QMovie(":images/spinner.gif");
-    ui->labelSpinner->setMovie(movie);
-    movie->start();
+    m_pTrayIconTimer = new QTimer(this);
+    connect(m_pTrayIconTimer, SIGNAL(timeout()), this, SLOT(trayIconTimeOut()));
+    m_pTrayIconTimer->setInterval(500);
+
+    //QMovie *movie = new QMovie(":images/spinner.gif");
+    //ui->labelSpinner->setMovie(movie);
+    //movie->start();
 
     restoreSettings();
     ui->stackedWidget->setCurrentIndex(1);
@@ -85,8 +91,7 @@ void MainWindow::createTrayMenu()
 void MainWindow::createTrayIcon()
 {
     m_pTrayIcon = new QSystemTrayIcon(this);
-
-    m_pTrayIcon->setIcon(QIcon(":/images/yammer_logo.png"));
+    m_pTrayIcon->setIcon(m_IconNormal);
     m_pTrayIcon->setContextMenu(m_pTrayMenu);
 }
 
@@ -128,7 +133,7 @@ void MainWindow::clearMessageWidgets()
 void MainWindow::updateMessageList()
 {
     ui->pushButtonUpdateMessages->hide();
-    m_pTrayIcon->setIcon(QIcon(":/images/yammer_logo.png"));
+    stopTrayIconBlinking();
 
     statusBar()->showMessage(tr("Updating ..."));
     //ui->listWidgetMessages->clear();
@@ -179,12 +184,11 @@ void MainWindow::popupMessages()
     Message* message = m_pClient->recentMessage();
     if (message && message->id() > last_message_id) {
         ui->pushButtonUpdateMessages->show();
-        m_pTrayIcon->setIcon(QIcon(":/images/yammer_notify.png"));
+        startTrayIconBlinking();
         m_pTrayIcon->showMessage(message->senderName(), message->bodyPlain());
         settings.setValue("last_message_id", QString::number(message->id()));
         settings.sync();
     }
-    //if (ui->listWidgetMessages->count() == 0) {
     if (ui->verticalLayout->count() == 0) {
         this->updateMessageList();
     }
@@ -195,6 +199,29 @@ void MainWindow::timeOut()
     //ui->stackedWidget->setCurrentIndex(0);
     statusBar()->showMessage(tr("Fetching data ..."));
     m_pClient->fetchMessages();
+}
+
+void MainWindow::startTrayIconBlinking()
+{
+    m_pTrayIconTimer->start();
+}
+
+void MainWindow::stopTrayIconBlinking()
+{
+    m_pTrayIconTimer->stop();
+    m_bBlink = true;
+    trayIconTimeOut();
+}
+
+void MainWindow::trayIconTimeOut()
+{
+    if (m_bBlink) {
+      m_pTrayIcon->setIcon(m_IconNormal);
+      m_bBlink = false;
+    } else {
+      m_pTrayIcon->setIcon(m_IconBlank);
+      m_bBlink = true;
+    }
 }
 
 void MainWindow::restoreSettings()
