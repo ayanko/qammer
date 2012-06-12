@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define YAMMER_OAUTH_URL "https://www.yammer.com/dialog/oauth"
-#define YAMMER_APP_CLIENT_ID "bXogiH2xwPH95u4nnxJfQ"
+#define YAMMER_APP_CLIENT_ID "CwYVcY7fQfmDyfCoxuYobw"
 #define YAMMER_APP_REDIRECT_URL "http://localhost"
 
 LoginDialog::LoginDialog(QWidget *parent) :

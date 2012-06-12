@@ -4,5 +4,7 @@
         <file>images/no_photo.jpg</file>
         <file>images/spinner.gif</file>
         <file>images/yammer_notify.png</file>
+        <file>images/qammer_icon.png</file>
+        <file>images/qammer_icon_blank.png</file>
     </qresource>
 </RCC>
