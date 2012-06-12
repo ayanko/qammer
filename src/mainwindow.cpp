@@ -139,12 +139,21 @@ void MainWindow::updateMessageList()
         messageWidget->setMessage(message);
 
         if(!message->children().empty()) {
-            foreach(Message* child, message->children()) {
-                MessageWidget* messageChildWidget = new MessageWidget(messageWidget);
-                messageChildWidget->setMessage(child);
-                messageChildWidget->adjustSize();
-                messageWidget->addChild(messageChildWidget);
-            }
+           QListIterator<Message*> i(message->children());
+           i.toBack();
+           while (i.hasPrevious()) {
+              Message* child = i.previous();
+              MessageWidget* messageChildWidget = new MessageWidget(messageWidget);
+              messageChildWidget->setMessage(child);
+              messageChildWidget->adjustSize();
+              messageWidget->addChild(messageChildWidget);
+           }
+            //foreach(Message* child, message->children()) {
+            //    MessageWidget* messageChildWidget = new MessageWidget(messageWidget);
+            //    messageChildWidget->setMessage(child);
+            //    messageChildWidget->adjustSize();
+            //    messageWidget->addChild(messageChildWidget);
+            //}
             //messageWidget->showChildren();
         }
         //messageWidget->adjustSize();
