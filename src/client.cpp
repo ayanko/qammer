@@ -1,12 +1,12 @@
 #include "client.h"
 #include "message.h"
 #include "user.h"
+#include "group.h"
 
 #include "../qt-json/json.h"
 #include <QSettings>
 #include <QUrl>
 #include <QDir>
-#include <QFile>
 #include <QDebug>
 
 #define YAMMER_API_BASE_URL "https://www.yammer.com/api/v1"
@@ -18,6 +18,7 @@ Client::Client(QObject *parent) :
 
     m_strMessagesUrl = QString(YAMMER_API_BASE_URL).append("/messages.json");
     m_strUsersUrl = QString(YAMMER_API_BASE_URL).append("/users.json");
+    m_strGroupsUrl = QString(YAMMER_API_BASE_URL).append("/groups.json");
 
     m_pNetworkManager = new QNetworkAccessManager(this);
     connect(m_pNetworkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
@@ -29,15 +30,6 @@ Client::Client(QObject *parent) :
     connect(m_pCacheManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(cachedReplyFinished(QNetworkReply*)));
 }
 
-QList<Message*> Client::messages()
-{
-    return m_tMessages;
-}
-
-QMap<qlonglong, User*> Client::users()
-{
-    return m_tUsers;
-}
 
 QString Client::accessToken()
 {
@@ -60,6 +52,13 @@ void Client::fetchUsers()
     m_pNetworkManager->get(QNetworkRequest(url));
 }
 
+void Client::fetchGroups()
+{
+    QUrl url(m_strGroupsUrl);
+    url.addQueryItem("access_token", accessToken());
+    m_pNetworkManager->get(QNetworkRequest(url));
+}
+
 void Client::replyFinished(QNetworkReply* reply)
 {
     QString url = reply->url().toString();
@@ -75,6 +74,8 @@ void Client::replyFinished(QNetworkReply* reply)
       parseMessages(data);
     } else if (url.contains(m_strUsersUrl) ) {
       parseUsers(data);
+    } else if (url.contains(m_strGroupsUrl) ) {
+      parseGroups(data);
     } else {
         qDebug() << "Unknown url:" << url;
     }
@@ -115,12 +116,6 @@ void Client::parseMessages(const QByteArray &data)
       exit(1);
     }
 
-    //QFile file("messages.json");
-    //if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-    //  QTextStream out(&file);
-    //  out << data;
-    //}
-
     while (!m_tMessages.isEmpty())
         delete m_tMessages.takeFirst();
 
@@ -151,12 +146,6 @@ void Client::parseUsers(const QByteArray &data)
 
     QVariant result = QtJson::Json::parse(data, ok); 
 
-    QFile file("users.json");
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-      QTextStream out(&file);
-      out << data;
-    }
-
     if(!ok) {
       qFatal("An error occurred during parsing");
       exit(1);
@@ -175,6 +164,31 @@ void Client::parseUsers(const QByteArray &data)
 
     qDebug() << "Received users: " << m_tUsers.size();
     emit usersReceived();
+}
+
+void Client::parseGroups(const QByteArray &data)
+{
+    bool ok;
+
+    QVariant result = QtJson::Json::parse(data, ok); 
+
+    if(!ok) {
+      qFatal("An error occurred during parsing");
+      exit(1);
+    }
+
+    while (!m_tGroups.values().isEmpty())
+        delete m_tGroups.values().takeFirst();
+
+    m_tGroups.clear();
+
+    foreach (QVariant item, result.toList()) {
+        Group* group = new Group(item);
+        m_tGroups[group->id()] = group;
+    }
+
+    qDebug() << "Received groups: " << m_tGroups.size();
+    emit groupsReceived();
 }
 
 User* Client::findUserById(qlonglong id)

@@ -8,6 +8,7 @@
 
 class Message;
 class User;
+class Group;
 
 class Client : public QObject
 {
@@ -17,10 +18,9 @@ public:
 
     void fetchMessages();
     void fetchUsers();
+    void fetchGroups();
 
     QString accessToken();
-    QList<Message*> messages();
-    QMap<qlonglong, User*> users();
     Message* recentMessage();
 
     User* findUserById(qlonglong id);
@@ -29,6 +29,7 @@ public:
 signals:
     void messagesReceived();
     void usersReceived();
+    void groupsReceived();
     
 public slots:
 
@@ -43,12 +44,21 @@ private:
 
     QString m_strMessagesUrl;
     QString m_strUsersUrl;
+    QString m_strGroupsUrl;
 
     QList<Message*> m_tMessages; 
     QMap<qlonglong, User*> m_tUsers; 
+    QMap<qlonglong, Group*> m_tGroups; 
 
     void parseMessages(const QByteArray &data);
     void parseUsers(const QByteArray &data);
+    void parseGroups(const QByteArray &data);
+
+public:
+    QList<Message*> messages()       { return m_tMessages; }
+    QMap<qlonglong, User*> users()   { return m_tUsers; }
+    QMap<qlonglong, Group*> groups() { return m_tGroups; }
+
 };
 
 #endif // CLIENT_H

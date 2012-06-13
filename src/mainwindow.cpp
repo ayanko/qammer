@@ -62,8 +62,9 @@ MainWindow::MainWindow(QWidget *parent) :
     restoreSettings();
     ui->stackedWidget->setCurrentIndex(1);
 
-    statusBar()->showMessage(tr("Fetching users ..."));
+    statusBar()->showMessage(tr("Prefetching ..."));
     m_pClient->fetchUsers();
+    m_pClient->fetchGroups();
 }
 
 MainWindow::~MainWindow()
