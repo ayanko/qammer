@@ -39,9 +39,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_pLoginDialog, SIGNAL(loggedIn()), this, SLOT(loggedIn()));
 
     m_pClient = new Client(this);
-    //connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(updateMessageList()));
-    //connect(m_pClient, SIGNAL(messagesReceived()), ui->pushButtonUpdateMessages, SLOT(show()));
-    //connect(m_pClient, SIGNAL(messagesReceived()), statusBar(), SLOT(clearMessage()));
     connect(m_pClient, SIGNAL(messagesReceived()), this, SLOT(popupMessages()));
     connect(m_pClient, SIGNAL(usersReceived()), this, SLOT(timeOut()));
 
@@ -140,7 +137,6 @@ void MainWindow::updateMessageList()
     stopTrayIconBlinking();
 
     statusBar()->showMessage(tr("Updating ..."));
-    //ui->listWidgetMessages->clear();
     clearMessageWidgets();
 
     foreach(Message* message, m_pClient->messages()) {
@@ -157,25 +153,12 @@ void MainWindow::updateMessageList()
               messageChildWidget->adjustSize();
               messageWidget->addChild(messageChildWidget);
            }
-            //foreach(Message* child, message->children()) {
-            //    MessageWidget* messageChildWidget = new MessageWidget(messageWidget);
-            //    messageChildWidget->setMessage(child);
-            //    messageChildWidget->adjustSize();
-            //    messageWidget->addChild(messageChildWidget);
-            //}
-            //messageWidget->showChildren();
         }
-        //messageWidget->adjustSize();
 
         ui->verticalLayout->addWidget(messageWidget);
-        //QListWidgetItem* item = new QListWidgetItem(ui->listWidgetMessages);
-        //ui->listWidgetMessages->setItemWidget(item, messageWidget);
-        // item->setSizeHint(messageWidget->size());
     }
 
     statusBar()->clearMessage();
-
-    //ui->stackedWidget->setCurrentIndex(1);
 }
 
 void MainWindow::popupMessages()
@@ -200,7 +183,6 @@ void MainWindow::popupMessages()
 
 void MainWindow::timeOut()
 {
-    //ui->stackedWidget->setCurrentIndex(0);
     statusBar()->showMessage(tr("Fetching data ..."));
     m_pClient->fetchMessages();
 }

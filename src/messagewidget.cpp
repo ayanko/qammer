@@ -10,9 +10,6 @@ MessageWidget::MessageWidget(QWidget *parent) :
     ui(new Ui::MessageWidget)
 {
     ui->setupUi(this);
-    //ui->listWidgetMessages->setMovement(QListView::Static);
-    //ui->listWidgetMessages->setResizeMode(QListView::Adjust);
-    //ui->listWidgetMessages->hide();
 }
 
 MessageWidget::~MessageWidget()
@@ -31,15 +28,7 @@ void MessageWidget::clearMessageWidgets()
 }
 
 void MessageWidget::addChild(MessageWidget* widget) {
-    //QListWidgetItem* item = new QListWidgetItem(ui->listWidgetMessages);
-    //ui->listWidgetMessages->setItemWidget(item, widget);
-    //item->setSizeHint(widget->size());
     ui->verticalLayout2->addWidget(widget);
-}
-
-void MessageWidget::showChildren()
-{
-    //ui->listWidgetMessages->show();
 }
 
 void MessageWidget::setMugshot(const QPixmap &pixmap)

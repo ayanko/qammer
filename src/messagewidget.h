@@ -23,7 +23,6 @@ public:
     void setTitle(const QString &text);
     void setContent(const QString &text);
     void setStatus(const QString &text);
-    void showChildren();
     void addChild(MessageWidget* widget);
     void setMessage(Message* message);
     
