@@ -3,6 +3,8 @@
 #include "message.h"
 #include "user.h"
 
+#include <QDebug>
+
 MessageWidget::MessageWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MessageWidget)
@@ -74,6 +76,11 @@ void MessageWidget::setMessage(Message* message)
     status.append("<i>");
     status.append(message->createdAt());
     status.append("</i> ");
+    status.append("from <a href=\"");
+    status.append(message->clientUrl());
+    status.append("\">");
+    status.append(message->clientType());
+    status.append("</a>   ");
     status.append("<a href=\"");
     status.append(message->webUrl()); 
     status.append("\">View</a>");

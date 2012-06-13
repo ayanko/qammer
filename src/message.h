@@ -22,14 +22,16 @@ private:
     QList<Message*> m_pChildren;
     User* m_pUser;
 
+    qlonglong m_llId;
+    qlonglong m_llTreadId;
+    qlonglong m_llSenderId;
     QString m_strWebUrl;
     QString m_strBodyPlain;
     QString m_strBodyParsed;
     QString m_strBodyRich;
     QString m_strCreatedAt;
-    qlonglong m_llId;
-    qlonglong m_llTreadId;
-    qlonglong m_llSenderId;
+    QString m_strClientUrl;
+    QString m_strClientType;
 
 public:
     User* user() { return m_pUser; }
@@ -43,6 +45,8 @@ public:
     QString bodyParsed() { return m_strBodyParsed; }
     QString bodyRich() { return m_strBodyRich; }
     QString createdAt() { return m_strCreatedAt; }
+    QString clientUrl() { return m_strClientUrl; }
+    QString clientType() { return m_strClientType; }
 
     QString senderName();
 };

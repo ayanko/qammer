@@ -19,6 +19,8 @@ Message::Message(QVariant attrs, QObject *parent) :
     m_strBodyParsed = hash.value("body").toMap().value("parsed").toString();
     m_strBodyRich = hash.value("body").toMap().value("rich").toString();
     m_strCreatedAt = hash.value("created_at").toString();
+    m_strClientUrl = hash.value("client_url").toString();
+    m_strClientType = hash.value("client_type").toString();
 }
 
 void Message::addChild(Message* message)
