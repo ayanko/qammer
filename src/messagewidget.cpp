@@ -1,5 +1,7 @@
 #include "messagewidget.h"
 #include "ui_messagewidget.h"
+
+#include "messagedialog.h"
 #include "message.h"
 #include "user.h"
 
@@ -53,6 +55,8 @@ void MessageWidget::setStatus(const QString &text)
 
 void MessageWidget::setMessage(Message* message)
 {
+    m_pMessage = message;
+
     QString title;
 
     if (message->user()) {
@@ -80,4 +84,11 @@ void MessageWidget::setMessage(Message* message)
     setTitle(title);
     setContent(message->bodyRich());
     setStatus(status);
+}
+
+
+void MessageWidget::on_toolButtonReply_clicked()
+{
+    MessageDialog dialog(this);
+    dialog.exec();
 }

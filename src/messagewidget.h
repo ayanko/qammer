@@ -25,9 +25,13 @@ public:
     void setStatus(const QString &text);
     void addChild(MessageWidget* widget);
     void setMessage(Message* message);
-    
+
+private slots:
+    void on_toolButtonReply_clicked();
+
 private:
     Ui::MessageWidget *ui;
+    Message* m_pMessage;
 };
 
 #endif // MESSAGEWIDGET_H
