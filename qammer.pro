@@ -18,7 +18,8 @@ SOURCES += src/main.cpp\
     src/messagewidget.cpp \
     src/client.cpp \
     src/message.cpp \
-    src/user.cpp
+    src/user.cpp \
+    src/group.cpp
 
 HEADERS  += src/mainwindow.h \
     src/logindialog.h \
@@ -26,7 +27,8 @@ HEADERS  += src/mainwindow.h \
     src/messagewidget.h \
     src/client.h \
     src/message.h \
-    src/user.h
+    src/user.h \
+    src/group.h
 
 FORMS    += src/mainwindow.ui \
     src/logindialog.ui \
