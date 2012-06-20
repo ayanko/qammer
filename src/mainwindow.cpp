@@ -230,3 +230,11 @@ void MainWindow::on_pushButtonUpdateMessages_clicked()
 {
     updateMessageList();
 }
+
+void MainWindow::keyPressEvent(QKeyEvent* event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        close();
+    }
+}

@@ -5,6 +5,7 @@
 #include <QSystemTrayIcon>
 #include <QTimer>
 #include <QIcon>
+#include <QKeyEvent>
 
 class Client;
 class LoginDialog;
@@ -27,6 +28,7 @@ protected:
     void restoreSettings();
     void closeEvent(QCloseEvent *event);
     void clearMessageWidgets();
+    void keyPressEvent(QKeyEvent* event);
 
 public slots:
     void toggle();
