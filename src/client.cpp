@@ -64,20 +64,24 @@ void Client::replyFinished(QNetworkReply* reply)
     QString url = reply->url().toString();
 
     if(reply->error() != QNetworkReply::NoError) {
-        qDebug() << "Error" << reply->error();
+        qDebug() << "Network Error" << reply->error();
+        qDebug() << "CODE" << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        qDebug() << "DATA" << reply->readAll();
         return;
     }
 
     QByteArray data = reply->readAll();
 
-    if ( url.contains(m_strMessagesUrl) ) {
-      parseMessages(data);
-    } else if (url.contains(m_strUsersUrl) ) {
-      parseUsers(data);
-    } else if (url.contains(m_strGroupsUrl) ) {
-      parseGroups(data);
-    } else {
-        qDebug() << "Unknown url:" << url;
+    if (reply->operation() == QNetworkAccessManager::GetOperation) {
+      if ( url.contains(m_strMessagesUrl) ) {
+        parseMessages(data);
+      } else if (url.contains(m_strUsersUrl) ) {
+        parseUsers(data);
+      } else if (url.contains(m_strGroupsUrl) ) {
+        parseGroups(data);
+      } else {
+          qDebug() << "Unknown url:" << url;
+      }
     }
     reply->deleteLater();
 }
@@ -89,7 +93,9 @@ void Client::cachedReplyFinished(QNetworkReply* reply)
     qDebug() << "cachedReplyFinished:" << url;
 
     if(reply->error() != QNetworkReply::NoError) {
-        qDebug() << "Error" << reply->error();
+        qDebug() << "Network Error" << reply->error();
+        qDebug() << "CODE" << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        qDebug() << "DATA" << reply->readAll();
         return;
     }
 
@@ -160,6 +166,7 @@ void Client::parseUsers(const QByteArray &data)
         User* user = new User(item);
         m_pCacheManager->get(QNetworkRequest(user->mugshotUrl()));
         m_tUsers[user->id()] = user;
+        //qDebug() << user->name() << user->id();
     }
 
     qDebug() << "Received users: " << m_tUsers.size();
@@ -212,4 +219,24 @@ Message* Client::recentMessage()
       return message;
 
     return message->children().first();
+}
+
+void Client::sendReplyMessage(const QString &body, qlonglong message_id)
+{
+    QUrl url(m_strMessagesUrl);
+    url.addQueryItem("access_token", accessToken());
+
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QVariantMap map;
+    map["body"] = body;
+    map["replied_to_id"] = message_id;
+
+    QByteArray data = QtJson::Json::serialize(map);
+    m_pNetworkManager->post(request, data);
+}
+
+void Client::sendGroupMessage(const QString &body, qlonglong group_id)
+{
 }

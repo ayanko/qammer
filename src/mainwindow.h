@@ -21,7 +21,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    Client *client();
+    Client *client() { return m_pClient; }
     void login();
 
 protected:

@@ -26,6 +26,9 @@ public:
     User* findUserById(qlonglong id);
     User* findUserByMessage(Message* message);
 
+    void sendReplyMessage(const QString &body, qlonglong message_id);
+    void sendGroupMessage(const QString &body, qlonglong group_id);
+
 signals:
     void messagesReceived();
     void usersReceived();

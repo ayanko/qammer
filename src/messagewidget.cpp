@@ -90,5 +90,6 @@ void MessageWidget::setMessage(Message* message)
 void MessageWidget::on_toolButtonReply_clicked()
 {
     MessageDialog dialog(this);
+    dialog.setMessage(m_pMessage);
     dialog.exec();
 }

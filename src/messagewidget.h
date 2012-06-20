@@ -32,6 +32,11 @@ private slots:
 private:
     Ui::MessageWidget *ui;
     Message* m_pMessage;
+
+public:
+
+    Message* message() { return m_pMessage; }
+
 };
 
 #endif // MESSAGEWIDGET_H

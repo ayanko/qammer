@@ -4,6 +4,8 @@
 
 #include "mainwindow.h"
 
+MainWindow* gMainWindow;
+
 class LoginDialog;
 
 int main(int argc, char *argv[])
@@ -24,6 +26,7 @@ int main(int argc, char *argv[])
     QApplication::setQuitOnLastWindowClosed(false);
 
     MainWindow w;
+    gMainWindow = &w;
     w.show();
 
     QSettings settings;
